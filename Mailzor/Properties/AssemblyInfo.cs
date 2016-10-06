@@ -5,11 +5,11 @@ using System.Runtime.InteropServices;
 // General Information about an assembly is controlled through the following 
 // set of attributes. Change these attribute values to modify the information
 // associated with an assembly.
-[assembly: AssemblyTitle("Mailzor")]
+[assembly: AssemblyTitle("Sohato.SupportPortal.RazorMail")]
 [assembly: AssemblyDescription("")]
 [assembly: AssemblyConfiguration("")]
 [assembly: AssemblyCompany("")]
-[assembly: AssemblyProduct("Mailzor")]
+[assembly: AssemblyProduct("Sohato.SupportPortal.RazorMail")]
 [assembly: AssemblyCopyright("Copyright ©  2016")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
@@ -20,7 +20,7 @@ using System.Runtime.InteropServices;
 [assembly: ComVisible(false)]
 
 // The following GUID is for the ID of the typelib if this project is exposed to COM
-[assembly: Guid("5d7b2176-54e7-4b38-81b0-0d10f2139816")]
+[assembly: Guid("5874c275-72fb-4a1b-9b62-d4f2b240bbad")]
 
 // Version information for an assembly consists of the following four values:
 //
