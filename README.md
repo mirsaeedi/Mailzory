@@ -39,7 +39,8 @@ Mailzory uses SmtpClient for sending emails, but as you can see there is no sign
 // template path
 var viewPath = Path.Combine(HostingEnvironment.MapPath("~/Views/Emails"), "hello.cshtml"); 
 // read the content of template and pass it to the Email constructor
-var email = new Email(File.ReadAllText(viewPath));
+var template = File.ReadAllText(viewPath);
+var email = new Email(template);
 // set ViewBag properties
 email.ViewBag.Name = "Johnny";
 email.ViewBag.Content = "Mailzory Is Funny";
