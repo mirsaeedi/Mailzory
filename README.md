@@ -54,7 +54,7 @@ And also suppose that we have the following strongly typed template. its name is
 
 ```
 
-* Sendnig syncronous email with default configurations (Loosely Typed Template)
+### Sendnig syncronous email (Loosely Typed Template)
 
 Mailzory uses SmtpClient for sending emails, but as you can see there is no sign of SmptClient in the following snippet. In this case Mailzory uses [mailSettings](https://msdn.microsoft.com/en-us/library/w355a94k(v=vs.110).aspx) in your web.config (or app.config) for configuring the SmtpClient.
 
@@ -85,7 +85,7 @@ A sample for mailSettings at web.config (or app.config)
   
 ```
 
-* Sendnig asyncronous email with default configurations (Loosely Typed Template)
+### Sendnig asyncronous email (Loosely Typed Template)
 
 You can send emails asynchronously. Mailzory async methods are return a Task instance.
 
@@ -103,7 +103,7 @@ var task = email.Send("mailzory@mailzory.co", "subject");
 task.Wait();
 ```
 
-* Sending email (Strongly Typed Templates)
+### Sending asyncronous email (Strongly Typed Templates)
 
 In addition to ViewBag, you can pass a strongly typed model to your template. Note that in the following example we are sending an email for multipe recievers.
 
@@ -125,4 +125,26 @@ var task =
     , "subject");
 
 task.Wait();
+```
+### Configure SmtpClient At Runtime
+
+You can pass a customized instance of SmtpClient to the Email constructor and Mailzory will use that for sending emails instead of dependeing on mailSettings at web.config.
+
+```c#
+var smtpClient = new SmtpClient("host")
+{
+    EnableSsl=true,
+    Host="",
+    Timeout=60,
+    UseDefaultCredentials=false,
+    Port=587,
+    Credentials = new NetworkCredential("username", "password")
+};
+// template path
+var viewPath = Path.Combine("Views/Emails", "hello.cshtml");
+// read the content of template and pass it to the Email constructor
+var template = File.ReadAllText(viewPath);
+var email = new Email(template, smtpClient);
+email.Send("mirsaeedi@outlook.com", "subject");
+
 ```
