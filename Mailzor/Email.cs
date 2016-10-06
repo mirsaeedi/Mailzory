@@ -8,7 +8,7 @@ using System.Net.Mail;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Mailzor
+namespace Mailzory
 {
     public class Email:IDisposable
     {
@@ -38,10 +38,10 @@ namespace Mailzor
 
         #region Interface
 
-        public void SendAsync(string[] toMails, string subject,object userToken)
+        public Task SendAsync(string[] toMails, string subject)
         {
             var email = ConfigureEmail(toMails, subject);
-            _smtpClient.SendAsync(email,userToken);
+            return Task.Run(() => _smtpClient.Send(email));
         }
 
         public void Send(string[] toMails, string subject)
@@ -55,9 +55,9 @@ namespace Mailzor
             Send(new string[] { toMail }, subject);
         }
 
-        public void SendAsync(string toMail, string subject, object userToken)
+        public void SendAsync(string toMail, string subject)
         {
-            SendAsync(new string[] { toMail }, subject, userToken);
+            SendAsync(new string[] { toMail }, subject);
         }
 
         public void Dispose()
