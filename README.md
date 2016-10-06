@@ -1,5 +1,5 @@
-# Mailzor
-Mailzor helps you to send emails which are based on Razor templates. Mailzor is dependent on RazorEngine project for compiling your Razor templates and that means you are limited to the power of RazorEngine for template processing.
+# Mailzory
+Mailzory helps you to send emails which are based on Razor templates. Mailzory is dependent on RazorEngine project for compiling your Razor templates and that means you are limited to the power of RazorEngine for template processing.
 
 ## Install (Nuget)
 
@@ -9,7 +9,7 @@ Install-Package Mailzory
 ```
 ## Usage
 
-how will Mailzor helps us to send email, if we have the following template?
+how will Mailzory helps us to send email, if we have the following template?
 
 
 ```html
@@ -33,7 +33,7 @@ how will Mailzor helps us to send email, if we have the following template?
 
 * Sendig email with default configurations
 
-Mailzor uses SmtpClient for sending emails, but as you can see there is no sign of SmptClient in the following snippet. In this case Mailzor uses [mailSettings](https://msdn.microsoft.com/en-us/library/w355a94k(v=vs.110).aspx) in your web.config (or app.config) for configuring the SmtpClient.
+Mailzory uses SmtpClient for sending emails, but as you can see there is no sign of SmptClient in the following snippet. In this case Mailzory uses [mailSettings](https://msdn.microsoft.com/en-us/library/w355a94k(v=vs.110).aspx) in your web.config (or app.config) for configuring the SmtpClient.
 
 ```c#
 // template path
@@ -42,7 +42,7 @@ var viewPath = Path.Combine(HostingEnvironment.MapPath("~/Views/Emails"), "hello
 var email = new Email(File.ReadAllText(viewPath));
 // set ViewBag properties
 email.ViewBag.Name = "Johnny";
-email.ViewBag.Content = "Mailzor Is Funny";
+email.ViewBag.Content = "Mailzory Is Funny";
 // send it
 email.Send(issueResponsible.User.Email, "subject");                
 ```
