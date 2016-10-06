@@ -108,21 +108,21 @@ task.Wait();
 In addition to ViewBag, you can pass a strongly typed model to your template. Note that in the following example we are sending an email for multipe recievers.
 
 ```c#
-          var viewPath = Path.Combine("Views/Emails", "MessageModelHello.cshtml");
-            // read the content of template and pass it to the Email constructor
-            var template = File.ReadAllText(viewPath);
-            // fill model
-            var model = new MessageModel
-            {
-                Content = "Mailzory Is Funny. Its a Model Based message.",
-                Name = "Johnny"
-            };
+var viewPath = Path.Combine("Views/Emails", "typedHello.cshtml");
+// read the content of template and pass it to the Email constructor
+var template = File.ReadAllText(viewPath);
+// fill model
+var model = new MessageModel
+{
+    Content = "Mailzory Is Funny. Its a Model Based message.",
+    Name = "Johnny"
+};
 
-            var email = new Email<MessageModel>(template,model);
-            // send it
-            var task =
-                email.SendAsync(new[] { "mailzory1@mailzory.co","mailzory2@mailzory.co" }
-                , "subject");
+var email = new Email<MessageModel>(template,model);
+// send it
+var task =
+    email.SendAsync(new[] { "mailzory1@mailzory.co","mailzory2@mailzory.co" }
+    , "subject");
 
-            task.Wait();
+task.Wait();
 ```
