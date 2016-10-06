@@ -55,9 +55,9 @@ namespace Mailzory
             Send(new string[] { toMail }, subject);
         }
 
-        public void SendAsync(string toMail, string subject)
+        public Task SendAsync(string toMail, string subject)
         {
-            SendAsync(new string[] { toMail }, subject);
+            return SendAsync(new string[] { toMail }, subject);
         }
 
         public void Dispose()
