@@ -52,7 +52,7 @@ A sample for mailSettings at web.config (or app.config)
 
   <system.net>
     <mailSettings>
-      <smtp deliveryMethod="Network" from="portal@sohato.com">
+      <smtp deliveryMethod="Network" from="{the mail address which is sending your emails: mailzor@isgood.com}">
         <network host="{mail server address}" port="{mail server port}" defaultCredentials="{true|false}" userName="{username}" password="{password}" />
       </smtp>
     </mailSettings>
