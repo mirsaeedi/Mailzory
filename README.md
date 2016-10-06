@@ -30,7 +30,9 @@ how will Mailzor helps us to send email, if we have the following template?
 </div>
 ```
 
-Sendig email with default configurations.
+* Sendig email with default configurations
+
+Mailzor uses SmtpClient for sending emails, but as you can see there is no sign of SmptClient in the following snippet. In this case Mailzor uses [mailSettings](https://msdn.microsoft.com/en-us/library/w355a94k(v=vs.110).aspx) in your web.config (or app.config) for configuring the SmtpClient.
 
 ```c#
 // template path
@@ -42,4 +44,18 @@ email.ViewBag.Name = "Johnny";
 email.ViewBag.Content = "Mailzor Is Funny";
 // send it
 email.Send(issueResponsible.User.Email, "subject");                
+```
+
+A sample for mailSettings at web.config (or app.config)
+
+```xml
+
+  <system.net>
+    <mailSettings>
+      <smtp deliveryMethod="Network" from="portal@sohato.com">
+        <network host="{mail server address}" port="{mail server port}" defaultCredentials="{true|false}" userName="{username}" password="{password}" />
+      </smtp>
+    </mailSettings>
+  </system.net>
+  
 ```
