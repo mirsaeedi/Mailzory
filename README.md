@@ -13,7 +13,7 @@ Sendig email with default configurations.
 ```c#
 // template path
 var viewPath = Path.Combine(HostingEnvironment.MapPath("~/Views/Emails"), "hello.cshtml"); 
-// read the contents of tempate and pass them to Email object
+// read the content of template and pass it to the Email constructor
 var email = new Email(File.ReadAllText(viewPath));
 // set ViewBag properties
 email.ViewBag.Name = "Johnny";
