@@ -8,6 +8,28 @@ $ npm install --save pageres
 ```
 ## Usage
 
+how will Mailzor helps us to send email, if we have the following template?
+
+
+```razor
+<div>
+
+    <h1 style="font-size:13px">
+        <label>@ViewBag.Name</label>
+    </h1>
+
+    <hr>
+
+    <div>
+        <p>
+            @ViewBag.Content
+        </p>       
+    </div>
+
+
+</div>
+```
+
 Sendig email with default configurations.
 
 ```c#
