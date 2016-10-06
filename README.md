@@ -11,7 +11,7 @@ $ npm install --save pageres
 how will Mailzor helps us to send email, if we have the following template?
 
 
-```razor
+```c#
 <div>
 
     <h1 style="font-size:13px">
