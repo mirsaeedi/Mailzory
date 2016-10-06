@@ -44,7 +44,7 @@ var email = new Email(File.ReadAllText(viewPath));
 email.ViewBag.Name = "Johnny";
 email.ViewBag.Content = "Mailzory Is Funny";
 // send it
-email.Send(issueResponsible.User.Email, "subject");                
+email.Send("mailzory@mailzory.co", "subject");
 ```
 
 A sample for mailSettings at web.config (or app.config)
