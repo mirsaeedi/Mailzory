@@ -1,5 +1,5 @@
 # Mailzor
-Mailzor helps you to send emails which are based on Razor templates. Mailzor is dependent on RazorEngine project for compiling your Razor templates and that means are limited to the power of RazorEngine in processing templates.
+Mailzor helps you to send emails which are based on Razor templates. Mailzor is dependent on RazorEngine project for compiling your Razor templates and that means you are limited to the power of RazorEngine for template processing.
 
 ## Install
 
@@ -8,14 +8,17 @@ $ npm install --save pageres
 ```
 ## Usage
 
-```js
-const Pageres = require('pageres');
+Sendig email with default configurations.
 
-const pageres = new Pageres({delay: 2})
-	.src('yeoman.io', ['480x320', '1024x768', 'iphone 5s'], {crop: true})
-	.src('todomvc.com', ['1280x1024', '1920x1080'])
-	.src('data:text/html;base64,PGgxPkZPTzwvaDE+', ['1024x768'])
-	.dest(__dirname)
-	.run()
-	.then(() => console.log('done'));
+```c#
+	// template path
+	var viewPath = Path.Combine(HostingEnvironment.MapPath("~/Views/Emails"), "hello.cshtml"); 
+	// read the contents of tempate and pass them to Email object
+        var email = new Email(File.ReadAllText(viewPath));
+	// set ViewBag properties
+        email.ViewBag.Name = "Johnny";
+        email.ViewBag.Content = "Mailzor Is Funny";
+	// send it
+        email.Send(issueResponsible.User.Email, "subject");
+                
 ```
