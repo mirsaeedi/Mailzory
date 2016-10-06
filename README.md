@@ -11,7 +11,7 @@ Install-Package Mailzory
 
 So how will Mailzory helps us to send emails?
 
-Suppose we have the following loosly typed template? its name is hello.cshtml
+Suppose we have the following loosely typed template. its name is hello.cshtml
 
 ```html
 <div>
@@ -54,7 +54,7 @@ And also suppose that we have the following strongly typed template. its name is
 
 ```
 
-* Sendnig syncronous email with default configurations (Loosly Typed Template)
+* Sendnig syncronous email with default configurations (Loosely Typed Template)
 
 Mailzory uses SmtpClient for sending emails, but as you can see there is no sign of SmptClient in the following snippet. In this case Mailzory uses [mailSettings](https://msdn.microsoft.com/en-us/library/w355a94k(v=vs.110).aspx) in your web.config (or app.config) for configuring the SmtpClient.
 
@@ -85,7 +85,7 @@ A sample for mailSettings at web.config (or app.config)
   
 ```
 
-* Sendnig asyncronous email with default configurations (Loosly Typed Template)
+* Sendnig asyncronous email with default configurations (Loosely Typed Template)
 
 You can send emails asynchronously. Mailzory async methods are return a Task instance.
 
