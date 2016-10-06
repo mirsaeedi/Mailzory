@@ -11,14 +11,13 @@ $ npm install --save pageres
 Sendig email with default configurations.
 
 ```c#
-	// template path
-	var viewPath = Path.Combine(HostingEnvironment.MapPath("~/Views/Emails"), "hello.cshtml"); 
-	// read the contents of tempate and pass them to Email object
-        var email = new Email(File.ReadAllText(viewPath));
-	// set ViewBag properties
-        email.ViewBag.Name = "Johnny";
-        email.ViewBag.Content = "Mailzor Is Funny";
-	// send it
-        email.Send(issueResponsible.User.Email, "subject");
-                
+// template path
+var viewPath = Path.Combine(HostingEnvironment.MapPath("~/Views/Emails"), "hello.cshtml"); 
+// read the contents of tempate and pass them to Email object
+var email = new Email(File.ReadAllText(viewPath));
+// set ViewBag properties
+email.ViewBag.Name = "Johnny";
+email.ViewBag.Content = "Mailzor Is Funny";
+// send it
+email.Send(issueResponsible.User.Email, "subject");                
 ```
