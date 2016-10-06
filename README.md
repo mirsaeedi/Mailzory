@@ -1,10 +1,11 @@
 # Mailzor
 Mailzor helps you to send emails which are based on Razor templates. Mailzor is dependent on RazorEngine project for compiling your Razor templates and that means you are limited to the power of RazorEngine for template processing.
 
-## Install
+## Install (Nuget)
 
-```
-$ npm install --save pageres
+```powershell
+Install-Package Mailzory
+
 ```
 ## Usage
 
