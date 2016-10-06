@@ -145,6 +145,6 @@ var viewPath = Path.Combine("Views/Emails", "hello.cshtml");
 // read the content of template and pass it to the Email constructor
 var template = File.ReadAllText(viewPath);
 var email = new Email(template, smtpClient);
-email.Send("mirsaeedi@outlook.com", "subject");
+email.Send("test@outlook.com", "subject");
 
 ```
