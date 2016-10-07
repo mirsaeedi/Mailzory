@@ -64,12 +64,25 @@ namespace Test
             // template path
             var viewPath = Path.Combine("Views/Emails", "hello.cshtml");
             // read the content of template and pass it to the Email constructor
-            var email = new Email(File.ReadAllText(viewPath));
+            var template = File.ReadAllText(viewPath);
+            var email = new Email(template);
             // set ViewBag properties
             email.ViewBag.Name = "Johnny";
             email.ViewBag.Content = "Mailzory Is Funny";
+            // set Attachments
+            email.Attachments.Add(new Attachment("Attachments/attach1.pdf"));
+            email.Attachments.Add(new Attachment("Attachments/attach2.docx"));
+            // set your desired display name (Optional)
+            email.SetFrom("test@outlook.com","King Of Mail Zone");
             // send it
             email.Send("test@outlook.com", "subject");
+
+            email.Send("test@outlook.com", "subject",
+                ccMailAddresses:new[] { "test@gmail.com" });
+
+            email.Send("test@outlook.com", "subject",
+                bccMailAddresses: new[] { "test@gmail.com" });
+
         }
     }
 }

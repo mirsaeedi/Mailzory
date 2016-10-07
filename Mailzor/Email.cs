@@ -23,6 +23,10 @@ namespace Mailzory
 
         public dynamic ViewBag { get; set; }
 
+        public List<Attachment> Attachments { get; } = new List<Attachment>();
+        private string FromMailAddress { get; set; }
+        private string FromDisplayName { get; set; }
+
         #endregion
 
         #region Constructors
@@ -38,26 +42,52 @@ namespace Mailzory
 
         #region Interface
 
-        public Task SendAsync(string[] toMails, string subject)
+        public Task SendAsync(string[] toMailAddresses, string subject,string[] ccMailAddresses=null,string[] bccMailAddresses = null)
         {
-            var email = ConfigureEmail(toMails, subject);
-            return Task.Run(() => _smtpClient.Send(email));
+            return Task.Run(() => Send(toMailAddresses, subject, ccMailAddresses,bccMailAddresses));
         }
 
-        public void Send(string[] toMails, string subject)
+        public Task SendAsync(MailAddress[] toMailAddresses, string subject, MailAddress[] ccMailAddresses = null, MailAddress[] bccMailAddresses = null)
         {
-            var email = ConfigureEmail(toMails,subject);
+            return Task.Run(() => Send(toMailAddresses, subject, ccMailAddresses, bccMailAddresses));
+        }
+
+        public void Send(string[] toMailAddresses, string subject, string[] ccMailAddresses = null, string[] bccMailAddresses = null)
+        {
+            var to = toMailAddresses.Select(item => new MailAddress(item)).ToArray();
+
+            var cc = ccMailAddresses ==null
+                ?null
+                : ccMailAddresses.Select(item => new MailAddress(item)).ToArray();
+
+            var bcc = bccMailAddresses == null
+                ? null
+                : bccMailAddresses.Select(item => new MailAddress(item)).ToArray();
+
+            var email = ConfigureEmail(to,subject,cc,bcc);
             _smtpClient.Send(email);
         }
 
-        public void Send(string toMail, string subject)
+        public void Send(MailAddress[] toMailAddresses, string subject, MailAddress[] ccMailAddresses = null, MailAddress[] bccMailAddresses = null)
         {
-            Send(new string[] { toMail }, subject);
+            var email = ConfigureEmail(toMailAddresses, subject, ccMailAddresses, bccMailAddresses);
+            _smtpClient.Send(email);
         }
 
-        public Task SendAsync(string toMail, string subject)
+        public void Send(string toMailAddresses, string subject, string[] ccMailAddresses = null, string[] bccMailAddresses = null)
         {
-            return SendAsync(new string[] { toMail }, subject);
+            Send(new string[] { toMailAddresses }, subject,ccMailAddresses,bccMailAddresses);
+        }
+
+        public Task SendAsync(string toMailAddresses, string subject, string[] ccMailAddresses = null, string[] bccMailAddresses = null)
+        {
+            return SendAsync(new string[] { toMailAddresses }, subject, ccMailAddresses, bccMailAddresses);
+        }
+
+        public void SetFrom(string mailAddress,string displayName=null)
+        {
+            FromMailAddress = mailAddress;
+            FromDisplayName = displayName;
         }
 
         public void Dispose()
@@ -69,10 +99,10 @@ namespace Mailzory
 
         #region Privates
 
-        private MailMessage ConfigureEmail(string[] toMails, string subject)
+        private MailMessage ConfigureEmail(MailAddress[] toMails, string subject, MailAddress[] ccMails, MailAddress[] bccMails)
         {
             var emailHtmlBody = GenerateMailBody();
-
+            
             var email = new MailMessage()
             {
                 Body = emailHtmlBody,
@@ -80,8 +110,25 @@ namespace Mailzory
                 Subject = subject
             };
 
-            foreach (var toMail in toMails)
-                email.To.Add(new MailAddress(toMail));
+            email.BodyEncoding = Encoding.UTF8;
+            email.SubjectEncoding = Encoding.UTF8;
+
+            foreach (var attachment in Attachments)
+            {
+                email.Attachments.Add(attachment);
+            }
+            
+            foreach (var toMail in toMails ?? Enumerable.Empty<MailAddress>())
+                email.To.Add(toMail);
+
+            foreach (var ccMail in ccMails ?? Enumerable.Empty<MailAddress>())
+                email.CC.Add(ccMail);
+
+            foreach (var bccMail in bccMails ?? Enumerable.Empty<MailAddress>())
+                email.Bcc.Add(bccMail);
+
+            if(FromMailAddress!=null)
+                email.From = new MailAddress(FromMailAddress,FromDisplayName);
 
             return email;
         }

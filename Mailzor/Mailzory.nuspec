@@ -2,16 +2,16 @@
 <package >
   <metadata>
     <id>Mailzory</id>
-    <version>1.1.1</version>
+    <version>1.2.0</version>
     <title>Mailzory</title>
     <authors>Ehsan Mirsaeedi</authors>
     <owners>Ehsan Mirsaeedi</owners>
     <licenseUrl>https://github.com/mirsaeedi/Mailzory</licenseUrl>
     <projectUrl>https://github.com/mirsaeedi/Mailzory</projectUrl>
     <requireLicenseAcceptance>false</requireLicenseAcceptance>
-    <description>Mailzor helps you to send emails which are based on Razor templates. Mailzor is dependent on RazorEngine project.</description>
+    <description>Mailzory helps you to send emails which are based on Razor templates. Mailzory is dependent on RazorEngine project.</description>
     <copyright>Copyright 2016</copyright>
-    <tags>Email, Razor, Mail, Mailzor,Smtp, Postal,RazorEngine</tags>
+    <tags>Email, Razor, Mail, Mailzory,Smtp, Postal,RazorEngine</tags>
     <dependencies>
       <dependency  id="Microsoft.AspNet.Razor" version="3.2.3" />
       <dependency  id="RazorEngine" version="3.9.0" />
