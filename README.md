@@ -4,7 +4,7 @@ Mailzory helps you to send emails which are based on Razor templates. Mailzory i
 * Mailzory supports CC & BCC 
 * Mailzory supports attachments
 * Mailzory supports custom display name of the sender
-* Mailzory supports syncronous and asyncronous (Task Based) sending
+* Mailzory supports synchronous and asynchronous (Task Based) sending
 
 ## Install (Nuget)
 
