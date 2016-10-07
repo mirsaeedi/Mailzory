@@ -79,10 +79,10 @@ email.Attachments.Add(new Attachment("Attachments/attach1.pdf"));
 email.Attachments.Add(new Attachment("Attachments/attach2.docx"));
 
 // set your desired display name (Optional)
-email.SetFrom("mirsaeedi@outlook.com","King Of Mail Zone");
+email.SetFrom("mailzory@outlook.com","Wolf of Wall Street");
 
 // send email
-email.Send("mirsaeedi@outlook.com", "subject");
+email.Send("mailzory@outlook.com", "subject");
 
 // send email with CC
 email.Send("mailzory@outlook.com", "subject",
