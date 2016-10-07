@@ -1,5 +1,10 @@
 # Mailzory
 Mailzory helps you to send emails which are based on Razor templates. Mailzory is dependent on RazorEngine project for compiling your Razor templates and that means you are limited to the power of RazorEngine for template processing.
+* Mailzory sends HTML (Razor Based) Templates
+* Mailzory supports CC & BCC 
+* Mailzory supports attachments
+* Mailzory supports custom display name of the sender
+* Mailzory supports syncronous and asyncronous (Task Based) sending
 
 ## Install (Nuget)
 
@@ -60,15 +65,33 @@ Mailzory uses SmtpClient for sending emails, but as you can see there is no sign
 
 ```c#
 // template path
-var viewPath = Path.Combine(HostingEnvironment.MapPath("~/Views/Emails"), "hello.cshtml"); 
+var viewPath = Path.Combine("Views/Emails", "hello.cshtml");
 // read the content of template and pass it to the Email constructor
 var template = File.ReadAllText(viewPath);
+
 var email = new Email(template);
-// set ViewBag properties
+
+// set ViewBag properties (you can also use strongly typed models)
 email.ViewBag.Name = "Johnny";
 email.ViewBag.Content = "Mailzory Is Funny";
-// send it
-email.Send("mailzory@mailzory.co", "subject");
+
+// set Attachments (Optional)
+email.Attachments.Add(new Attachment("Attachments/attach1.pdf"));
+email.Attachments.Add(new Attachment("Attachments/attach2.docx"));
+
+// set your desired display name (Optional)
+email.SetFrom("mirsaeedi@outlook.com","King Of Mail Zone");
+
+// send email
+email.Send("mirsaeedi@outlook.com", "subject");
+
+// send email with CC
+email.Send("mailzory@outlook.com", "subject",
+    ccMailAddresses:new[] { "ehsan.mir2000@gmail.com" });
+
+// send email with BCC
+email.Send("mailzory@outlook.com", "subject",
+    bccMailAddresses: new[] { "mailzory@gmail.com" });
 ```
 
 A sample for mailSettings at web.config (or app.config)
@@ -77,7 +100,7 @@ A sample for mailSettings at web.config (or app.config)
 
   <system.net>
     <mailSettings>
-      <smtp deliveryMethod="Network" from="{the mail address which is sending your emails: mailzor@isgood.com}">
+      <smtp deliveryMethod="Network" from="{the mail address which is sending your emails: mailzory@outlook.com}">
         <network enableSsl="{true|false}" host="{mail server address}" port="{mail server port}" defaultCredentials="{true|false}" userName="{username}" password="{password}" />
       </smtp>
     </mailSettings>
@@ -91,27 +114,30 @@ You can send emails asynchronously. Mailzory async methods are return a Task ins
 
 ```c#
 // template path
-var viewPath = Path.Combine(HostingEnvironment.MapPath("~/Views/Emails"), "hello.cshtml"); 
+var viewPath = Path.Combine("Views/Emails", "hello.cshtml");
 // read the content of template and pass it to the Email constructor
 var template = File.ReadAllText(viewPath);
+
 var email = new Email(template);
+
 // set ViewBag properties
 email.ViewBag.Name = "Johnny";
 email.ViewBag.Content = "Mailzory Is Funny";
-// send it
-var task = email.Send("mailzory@mailzory.co", "subject");
+
+// send email
+var task = email.SendAsync("mailzory@outlook.com", "subject");
 task.Wait();
 ```
 
 ### Sending asyncronous email (Strongly Typed Templates)
 
-In addition to ViewBag, you can pass a strongly typed model to your template. Note that in the following example we are sending an email for multipe recievers.
+In addition to ViewBag, you can pass a strongly typed model to your template. Note that in the following example we are sending an email to multiple recievers.
 
 ```c#
 var viewPath = Path.Combine("Views/Emails", "typedHello.cshtml");
 // read the content of template and pass it to the Email constructor
 var template = File.ReadAllText(viewPath);
-// fill model
+// fill the model
 var model = new MessageModel
 {
     Content = "Mailzory Is Funny. Its a Model Based message.",
@@ -119,7 +145,8 @@ var model = new MessageModel
 };
 
 var email = new Email<MessageModel>(template,model);
-// send it
+
+// send email
 var task =
     email.SendAsync(new[] { "mailzory1@mailzory.co","mailzory2@mailzory.co" }
     , "subject");
