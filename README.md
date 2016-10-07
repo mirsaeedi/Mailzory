@@ -5,6 +5,7 @@ Mailzory helps you to send emails which are based on Razor templates. Mailzory i
 * Mailzory supports attachments
 * Mailzory supports custom sender's display name
 * Mailzory supports synchronous and asynchronous (Task Based) sending
+* For the purpose of configuring Smtp settings, You can inject custom SmtpClient instance at Mailzory constructor. Also note that the other way for configuring Smtp settings would be using [mailSettings](https://msdn.microsoft.com/en-us/library/w355a94k(v=vs.110).aspx) tag in web.config or app.config.
 
 ## Install (Nuget)
 
@@ -59,7 +60,7 @@ And also suppose that we have the following strongly typed template.( "typedHell
 
 ### Sendnig synchronous email (Loosely Typed Template)
 
-Mailzory uses SmtpClient for sending emails, but as you can see there is no sign of SmptClient in the following snippet. In this case Mailzory uses [mailSettings](https://msdn.microsoft.com/en-us/library/w355a94k(v=vs.110).aspx) in your web.config (or app.config) for configuring the SmtpClient.
+Mailzory uses SmtpClient for sending emails, but as you can see there is no sign of SmptClient in the following snippet. At the following sample Mailzory uses [mailSettings](https://msdn.microsoft.com/en-us/library/w355a94k(v=vs.110).aspx) in web.config (or app.config) for configuring the SmtpClient.
 
 ```c#
 // template path
