@@ -3,7 +3,7 @@ Mailzory helps you to send emails which are based on Razor templates. Mailzory i
 * Mailzory sends HTML (Razor Based) Templates
 * Mailzory supports CC & BCC 
 * Mailzory supports attachments
-* Mailzory supports custom display sender name
+* Mailzory supports custom sender's display name
 * Mailzory supports synchronous and asynchronous (Task Based) sending
 
 ## Install (Nuget)
@@ -14,9 +14,7 @@ Install-Package Mailzory
 ```
 ## Usage
 
-So how will Mailzory helps us to send emails?
-
-Suppose we have the following loosely typed template. its name is hello.cshtml
+Suppose we have the following loosely typed template. ("hello.cshtml")
 
 ```html
 <div>
@@ -36,7 +34,7 @@ Suppose we have the following loosely typed template. its name is hello.cshtml
 </div>
 ```
 
-And also suppose that we have the following strongly typed template. its name is typedHello.cshtml
+And also suppose that we have the following strongly typed template.( "typedHello.cshtml" )
 
 ```html
 
