@@ -2,7 +2,6 @@
 using System;
 using System.Collections.Generic;
 using System.Dynamic;
-using System.IO;
 using System.Linq;
 using System.Net.Mail;
 using System.Text;
@@ -14,8 +13,8 @@ namespace Mailzory
     {
         #region Fields
 
-        protected string _razorTemplate;
-        private SmtpClient _smtpClient;
+        protected readonly string _razorTemplate;
+        private readonly SmtpClient _smtpClient;
 
         #endregion
 
@@ -42,14 +41,25 @@ namespace Mailzory
 
         #region Interface
 
-        public Task SendAsync(string[] toMailAddresses, string subject,string[] ccMailAddresses=null,string[] bccMailAddresses = null)
+        public Task SendAsync(string[] toMailAddresses, string subject, string[] ccMailAddresses=null, string[] bccMailAddresses = null)
         {
-            return Task.Run(() => Send(toMailAddresses, subject, ccMailAddresses,bccMailAddresses));
+            var to = toMailAddresses.Select(item => new MailAddress(item)).ToArray();
+
+            var cc = ccMailAddresses == null
+                ? null
+                : ccMailAddresses.Select(item => new MailAddress(item)).ToArray();
+
+            var bcc = bccMailAddresses == null
+                ? null
+                : bccMailAddresses.Select(item => new MailAddress(item)).ToArray();
+
+            return SendAsync(to, subject, cc, bcc);
         }
 
-        public Task SendAsync(MailAddress[] toMailAddresses, string subject, MailAddress[] ccMailAddresses = null, MailAddress[] bccMailAddresses = null)
+        public async Task SendAsync(MailAddress[] toMailAddresses, string subject, MailAddress[] ccMailAddresses = null, MailAddress[] bccMailAddresses = null)
         {
-            return Task.Run(() => Send(toMailAddresses, subject, ccMailAddresses, bccMailAddresses));
+            var email = ConfigureEmail(toMailAddresses, subject, ccMailAddresses, bccMailAddresses);
+            await _smtpClient.SendMailAsync(email).ConfigureAwait(false);
         }
 
         public void Send(string[] toMailAddresses, string subject, string[] ccMailAddresses = null, string[] bccMailAddresses = null)
@@ -64,8 +74,7 @@ namespace Mailzory
                 ? null
                 : bccMailAddresses.Select(item => new MailAddress(item)).ToArray();
 
-            var email = ConfigureEmail(to,subject,cc,bcc);
-            _smtpClient.Send(email);
+            Send(to, subject, cc, bcc);
         }
 
         public void Send(MailAddress[] toMailAddresses, string subject, MailAddress[] ccMailAddresses = null, MailAddress[] bccMailAddresses = null)
@@ -76,15 +85,15 @@ namespace Mailzory
 
         public void Send(string toMailAddresses, string subject, string[] ccMailAddresses = null, string[] bccMailAddresses = null)
         {
-            Send(new string[] { toMailAddresses }, subject,ccMailAddresses,bccMailAddresses);
+            Send(new[] { toMailAddresses }, subject,ccMailAddresses,bccMailAddresses);
         }
 
         public Task SendAsync(string toMailAddresses, string subject, string[] ccMailAddresses = null, string[] bccMailAddresses = null)
         {
-            return SendAsync(new string[] { toMailAddresses }, subject, ccMailAddresses, bccMailAddresses);
+            return SendAsync(new[] { toMailAddresses }, subject, ccMailAddresses, bccMailAddresses);
         }
 
-        public void SetFrom(string mailAddress,string displayName=null)
+        public void SetFrom(string mailAddress, string displayName = null)
         {
             FromMailAddress = mailAddress;
             FromDisplayName = displayName;
@@ -102,33 +111,40 @@ namespace Mailzory
         private MailMessage ConfigureEmail(MailAddress[] toMails, string subject, MailAddress[] ccMails, MailAddress[] bccMails)
         {
             var emailHtmlBody = GenerateMailBody();
-            
-            var email = new MailMessage()
+
+            var email = new MailMessage
             {
                 Body = emailHtmlBody,
                 IsBodyHtml = true,
-                Subject = subject
+                Subject = subject,
+                BodyEncoding = Encoding.UTF8,
+                SubjectEncoding = Encoding.UTF8
             };
-
-            email.BodyEncoding = Encoding.UTF8;
-            email.SubjectEncoding = Encoding.UTF8;
 
             foreach (var attachment in Attachments)
             {
                 email.Attachments.Add(attachment);
             }
-            
+
             foreach (var toMail in toMails ?? Enumerable.Empty<MailAddress>())
+            {
                 email.To.Add(toMail);
+            }
 
             foreach (var ccMail in ccMails ?? Enumerable.Empty<MailAddress>())
+            {
                 email.CC.Add(ccMail);
+            }
 
             foreach (var bccMail in bccMails ?? Enumerable.Empty<MailAddress>())
+            {
                 email.Bcc.Add(bccMail);
+            }
 
-            if(FromMailAddress!=null)
-                email.From = new MailAddress(FromMailAddress,FromDisplayName);
+            if (FromMailAddress != null)
+            {
+                email.From = new MailAddress(FromMailAddress, FromDisplayName);
+            }
 
             return email;
         }
@@ -152,7 +168,7 @@ namespace Mailzory
     {
         #region Properties
 
-        private T _model = null;
+        private readonly T _model;
 
         #endregion
 
