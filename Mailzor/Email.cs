@@ -2,8 +2,10 @@
 using System;
 using System.Collections.Generic;
 using System.Dynamic;
+using System.IO;
 using System.Linq;
 using System.Net.Mail;
+using System.Net.Mime;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -23,6 +25,8 @@ namespace Mailzory
         public dynamic ViewBag { get; set; }
 
         public List<Attachment> Attachments { get; } = new List<Attachment>();
+        public List<LinkedResource> LinkedResources { get; } = new List<LinkedResource>();
+
         private string FromMailAddress { get; set; }
         private string FromDisplayName { get; set; }
 
@@ -99,6 +103,24 @@ namespace Mailzory
             FromDisplayName = displayName;
         }
 
+        public LinkedResource AddImageResource(Stream stream, string contentId, string contentType)
+        {
+            return AddImageResource(stream, contentId, new ContentType(contentType));
+        }
+
+        public LinkedResource AddImageResource(Stream stream, string contentId, ContentType contentType)
+        {
+            var imageResource = new LinkedResource(stream, MediaTypeNames.Image.Jpeg)
+            {
+                ContentId = contentId,
+                ContentType = contentType
+            };
+
+            LinkedResources.Add(imageResource);
+
+            return imageResource;
+        }
+
         public void Dispose()
         {
             _smtpClient.Dispose();
@@ -125,6 +147,10 @@ namespace Mailzory
             {
                 email.Attachments.Add(attachment);
             }
+
+            var view = AlternateView.CreateAlternateViewFromString(emailHtmlBody, null, MediaTypeNames.Text.Html);
+            LinkedResources?.ForEach(res => view.LinkedResources.Add(res));
+            email.AlternateViews.Add(view);
 
             foreach (var toMail in toMails ?? Enumerable.Empty<MailAddress>())
             {

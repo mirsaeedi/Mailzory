@@ -72,6 +72,11 @@ namespace Test
             // set Attachments
             email.Attachments.Add(new Attachment("Attachments/attach1.pdf"));
             email.Attachments.Add(new Attachment("Attachments/attach2.docx"));
+
+            // set image resource
+            var fileStream = new FileStream("Views/Emails/microsoft.png", FileMode.Open);
+            email.AddImageResource(fileStream, "microsoft.png", "image/png");
+
             // set your desired display name (Optional)
             email.SetFrom("test@outlook.com","King Of Mail Zone");
             // send it
