@@ -13,17 +13,7 @@ Mailzory helps you to send emails which are based on Razor templates. Mailzory i
 Install-Package Mailzory
 
 ```
-## Usage
-
-Suppose we have the following loosely typed template. ("hello.cshtml")
-
-```html
-<div>
-
-    <h1 style="font-size:13px">
-        <label>@ViewBag.Name</label>
-    </h1>
-
+#
     <hr>
 
     <div>
